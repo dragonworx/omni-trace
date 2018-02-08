@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>trace-test</title>
+</head>
+<body>
+  <script src="../dist/trace-client-browser.js"></script>
+  <script>
+    trace('hello', 'world!');
+  </script>
+  <button onclick="trace('hello!', Date.now())">trace</button>
+</body>
+</html>

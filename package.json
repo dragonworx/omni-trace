@@ -1,0 +1,33 @@
+{
+  "name": "trace",
+  "version": "0.1.0",
+  "description": "runtime tracing for everyone",
+  "main": "./dist/trace.js",
+  "scripts": {
+    "start": "node index",
+    "client": "node ./fn-tests/node-client",
+    "build": "webpack",
+    "build-watch": "webpack --watch",
+    "test": "jest",
+    "test-watch": "jest --watch"
+  },
+  "keywords": [],
+  "author": "Ali Chamas",
+  "license": "MIT",
+  "repository": "https://github.com/dragonworx/axial.git",
+  "peerDependencies": {},
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-jest": "^21.2.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "jest": "^21.2.1",
+    "jest-cli": "^21.2.1",
+    "webpack": "^3.4.1"
+  },
+  "dependencies": {
+    "blessed": "^0.1.81",
+    "ws": "^3.3.3"
+  }
+}
