@@ -1,8 +1,7 @@
-import TraceClient from './trace-client';
+import TraceClientRemote from './trace-client-remote';
 import BrowserSocketAdapter from './adapter-socket-browser';
-import getAdapter from './adapter-factory';
 
-const client = new TraceClient(getAdapter(BrowserSocketAdapter));
+const client = new TraceClientRemote(BrowserSocketAdapter);
 
 export default function trace (...args) {
   client.send(args);

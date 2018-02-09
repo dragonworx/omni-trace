@@ -1,4 +1,4 @@
-export default class TraceClient {
+export default class TraceClientRemote {
   constructor (SocketAdapter) {
     console.log(SocketAdapter.name);
     this.socketAdapter = new SocketAdapter(this.onMessage);

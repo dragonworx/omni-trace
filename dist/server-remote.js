@@ -3229,92 +3229,130 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _ws = __webpack_require__(17);
 
 var _ws2 = _interopRequireDefault(_ws);
 
+var _local = __webpack_require__(31);
+
+var _local2 = _interopRequireDefault(_local);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var wss = null;
-var clientId = 0;
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function server(port) {
-  return new Promise(function (resolve, reject) {
-    port = port || 8080;
+var Server = function () {
+  function Server() {
+    _classCallCheck(this, Server);
 
-    wss = new _ws2.default.Server({ port: port });
+    this.wss = null;
+    this.clientId = 0;
 
-    wss.on('connection', function connection(ws) {
-      clientId++;
-      console.log('new client connected: #' + clientId + '\n');
+    this.server = new _local2.default();
+  }
 
-      ws.id = clientId;
-      ws.isAlive = true;
+  _createClass(Server, [{
+    key: 'start',
+    value: function start() {
+      var _this = this;
 
-      ws.on('pong', function heartbeat() {
-        this.isAlive = true;
-      });
+      var port = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 8080;
 
-      ws.on('message', function (message) {
-        var msg = JSON.parse(message);
+      return new Promise(function (resolve, reject) {
+        try {
+          var wss = new _ws2.default.Server({ port: port });
+          _this.wss = wss;
 
-        if (ws.isClosed) {
-          console.log('server-received (ws.closed): ' + message + '\n');
-          return;
+          wss.on('connection', function (ws) {
+            var clientId = ++_this.clientId;
+            console.log('new client connected: #' + clientId);
+
+            ws.clientId = clientId;
+            ws.isAlive = true;
+
+            ws.on('pong', function heartbeat() {
+              ws.isAlive = true;
+            });
+
+            ws.on('message', function (message) {
+              var msg = JSON.parse(message);
+
+              if (ws.isClosed) {
+                console.log('server-received (ws.closed): ' + message);
+                return;
+              }
+
+              console.log('server-received: ' + message);
+
+              if (msg.cmd === 'close') {
+                _this.close(ws, 'CLIENT-INITIATED');
+              } else if (msg.cmd === 'trace') {
+                _this.server.trace({
+                  clientId: msg.clientId,
+                  data: msg.data
+                });
+              }
+            });
+
+            ws.on('error', function (e) {
+              _this.close(ws, 'ECONNRESET');
+            });
+
+            ws.send(JSON.stringify({ cmd: 'id.set', value: clientId }));
+          });
+
+          wss.on('error', function (e) {
+            console.log('wss-error', e.stack);
+          });
+
+          wss.on('close', function (code, reason) {
+            console.log('close', code, reason);
+          });
+
+          console.log('------------------------------\nTrace Server started on port: ' + port + '\n');;
+
+          // this.pollPurgeBrokenConnections();
+
+          resolve();
+        } catch (e) {
+          reject(e);
         }
-
-        console.log('server-received: ' + message + '\n');
-
-        if (msg.cmd === 'close') {
-          close(ws, 'CLIENT-INITIATED');
-        }
       });
+    }
+  }, {
+    key: 'close',
+    value: function close(ws, reason) {
+      console.log('closed client connection: #' + ws.clientId + ' (' + reason + ')');
+      ws.terminate();
+      ws.isClosed = true;
+    }
+  }, {
+    key: 'pollPurgeBrokenConnections',
+    value: function pollPurgeBrokenConnections() {
+      var _this2 = this;
 
-      ws.on('error', function (e) {
-        close(ws, 'ECONNRESET');
-      });
+      var intervalMs = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 10;
 
-      ws.send(JSON.stringify({ cmd: 'id.set', value: clientId }));
-    });
+      var interval = setInterval(function () {
+        _this2.wss.clients.forEach(function (ws) {
+          if (ws.isAlive === false) {
+            console.log('terminating: ' + ws.clientId);
+            return ws.terminate();
+          }
 
-    wss.on('error', function (e) {
-      console.log('wss-error', e.stack);
-    });
+          ws.isAlive = false;
+          ws.ping();
+        });
+      }, intervalMs);
+    }
+  }]);
 
-    wss.on('close', function (code, reason) {
-      console.log('close', code, reason);
-    });
+  return Server;
+}();
 
-    console.log('------------------------------\nTrace Server started on port: ' + port + '\n');;
-
-    // pollPurgeBrokenConnections();
-
-    resolve(wss);
-  });
-}
-
-function close(ws, reason) {
-  console.log('closed client connection: #' + ws.id + ' (' + reason + ')\n');
-  ws.terminate();
-  ws.isClosed = true;
-}
-
-function pollPurgeBrokenConnections(intervalMs) {
-  intervalMs = intervalMs || 10;
-  var interval = setInterval(function ping() {
-    wss.clients.forEach(function (ws) {
-      if (ws.isAlive === false) {
-        console.log('terminating: ' + ws.id);
-        return ws.terminate();
-      }
-
-      ws.isAlive = false;
-      ws.ping('', false, true);
-    });
-  }, intervalMs);
-}
-
-exports.default = server;
+exports.default = Server;
 
 /***/ }),
 /* 17 */
@@ -4158,7 +4196,47 @@ function abortConnection(socket, code, message) {
   socket.destroy();
 }
 
+/***/ }),
+/* 31 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var LocalServer = function () {
+  function LocalServer() {
+    _classCallCheck(this, LocalServer);
+
+    this.buffer = [];
+  }
+
+  _createClass(LocalServer, [{
+    key: 'trace',
+    value: function trace(event) {
+      var bufferedEvent = _extends({}, event, {
+        time: Date.now()
+      });
+      console.log('TRACE:', bufferedEvent);
+      this.buffer.push(bufferedEvent);
+    }
+  }]);
+
+  return LocalServer;
+}();
+
+exports.default = LocalServer;
+
 /***/ })
 /******/ ])["default"];
 });
-//# sourceMappingURL=server.js.map
+//# sourceMappingURL=server-remote.js.map

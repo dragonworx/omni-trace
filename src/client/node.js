@@ -1,8 +1,7 @@
-import TraceClient from './trace-client';
+import TraceClientRemote from './trace-client-remote';
 import NodeSocketAdapter from './adapter-socket-node';
-import getAdapter from './adapter-factory';
 
-const client = new TraceClient(getAdapter(NodeSocketAdapter));
+const client = new TraceClientRemote(NodeSocketAdapter);
 
 export default function trace (...args) {
   client.send(args);

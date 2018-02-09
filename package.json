@@ -4,8 +4,9 @@
   "description": "runtime tracing for everyone",
   "main": "./dist/trace.js",
   "scripts": {
-    "test-server": "node ./fn-tests/node-server",
-    "test-client": "node ./fn-tests/node-client",
+    "test-server": "node ./fn-tests/node-server-remote",
+    "test-client": "node ./fn-tests/node-client-remote",
+    "test-inproc": "node ./fn-tests/node-client-inproc",
     "build": "webpack",
     "build-watch": "webpack --watch",
     "test": "jest",

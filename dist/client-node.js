@@ -70,7 +70,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 18);
+/******/ 	return __webpack_require__(__webpack_require__.s = 16);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -760,157 +760,6 @@ try {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _config = __webpack_require__(6);
-
-var _config2 = _interopRequireDefault(_config);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var AdapterBase = function () {
-  function AdapterBase(onMessageHandler) {
-    _classCallCheck(this, AdapterBase);
-
-    this.socket = null;
-    this.isConnected = false;
-    this.isConnecting = false;
-    this.hasError = false;
-    this.clientId = null;
-    this.onMessageHandler = onMessageHandler;
-  }
-
-  _createClass(AdapterBase, [{
-    key: 'connect',
-    value: function connect() {
-      var _this = this;
-
-      return new Promise(function (resolve, reject) {
-        var host = _config2.default.host,
-            port = _config2.default.port;
-
-
-        _config2.default.isConnecting = true;
-
-        console.log('connecting:', host, port);
-        _this.createSocket(host, port).then(function (socket) {
-          _this.socket = socket;
-          _this.isConnected = true;
-          _this.isConnecting = false;
-
-          _this.resolveConnection = resolve;
-        }).catch(reject);
-      });
-    }
-  }, {
-    key: 'createSocket',
-    value: function createSocket(host, port) {
-      // 1. create socket implementation
-      // 2. bind to handlers
-      // 3. return Promise.resolve(socket)
-      throw new Error('unimplemented');
-    }
-  }, {
-    key: 'onMessage',
-    value: function onMessage(data) {
-      if (data.cmd === 'id.set') {
-        this.clientId = _config2.default.clientId = data.value;
-        this.resolveConnection();
-      }
-      this.onMessageHandler(data);
-    }
-  }, {
-    key: 'onError',
-    value: function onError(error) {
-      this.hasError = true;
-      console.log('error!', error);
-    }
-  }, {
-    key: 'send',
-    value: function send(cmd) {
-      var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-
-      if (this.hasError) {
-        throw new Error('Cannot send trace data, socket has failed.');
-      }
-
-      var message = {
-        clientId: this.clientId,
-        cmd: cmd,
-        data: data
-      };
-
-      try {
-        var jsonStr = JSON.stringify(message);
-        this.socketSend(jsonStr);
-      } catch (e) {
-        throw new Error('Cannot convert trace message data to JSON: ' + e.toString());
-      }
-    }
-  }, {
-    key: 'socketSend',
-    value: function socketSend(jsonStr) {
-      // send json string using socket implementation
-      throw new Error('unimplemented');
-    }
-  }, {
-    key: 'close',
-    value: function close() {
-      this.send('close');
-    }
-  }]);
-
-  return AdapterBase;
-}();
-
-exports.default = AdapterBase;
-;
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var defaultConfig = {
-  inproc: false,
-  host: 'ws://127.0.0.1',
-  port: 8080,
-  clientId: null
-};
-
-var config = defaultConfig;
-
-if ((typeof __TRACE__ === 'undefined' ? 'undefined' : _typeof(__TRACE__)) === 'object') {
-  config = __TRACE__;
-} else {
-  global.__TRACE__ = config;
-}
-
-config.isConnected = false;
-
-exports.default = config;
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
 /*!
  * ws: a node.js websocket client
  * Copyright(c) 2011 Einar Otto Stangvik <einaros@gmail.com>
@@ -931,19 +780,19 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var EventEmitter = __webpack_require__(8);
+var EventEmitter = __webpack_require__(6);
 var crypto = __webpack_require__(3);
-var Ultron = __webpack_require__(9);
+var Ultron = __webpack_require__(7);
 var https = __webpack_require__(23);
-var http = __webpack_require__(10);
-var url = __webpack_require__(11);
+var http = __webpack_require__(8);
+var url = __webpack_require__(9);
 
 var PerMessageDeflate = __webpack_require__(1);
 var EventTarget = __webpack_require__(31);
-var Extensions = __webpack_require__(14);
+var Extensions = __webpack_require__(12);
 var constants = __webpack_require__(2);
-var Receiver = __webpack_require__(15);
-var Sender = __webpack_require__(17);
+var Receiver = __webpack_require__(13);
+var Sender = __webpack_require__(15);
 
 var protocolVersions = [8, 13];
 var closeTimeout = 30 * 1000; // Allow 30 seconds to terminate the connection cleanly.
@@ -1691,13 +1540,13 @@ function initAsClient(address, protocols, options) {
 }
 
 /***/ }),
-/* 8 */
+/* 6 */
 /***/ (function(module, exports) {
 
 module.exports = require("events");
 
 /***/ }),
-/* 9 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1839,19 +1688,19 @@ Ultron.prototype.destroy = function destroy() {
 module.exports = Ultron;
 
 /***/ }),
-/* 10 */
+/* 8 */
 /***/ (function(module, exports) {
 
 module.exports = require("http");
 
 /***/ }),
-/* 11 */
+/* 9 */
 /***/ (function(module, exports) {
 
 module.exports = require("url");
 
 /***/ }),
-/* 12 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2029,7 +1878,7 @@ exports.getRoot = function getRoot(file) {
 /* WEBPACK VAR INJECTION */}.call(exports, "/index.js"))
 
 /***/ }),
-/* 13 */
+/* 11 */
 /***/ (function(module, exports) {
 
 function webpackEmptyContext(req) {
@@ -2038,10 +1887,10 @@ function webpackEmptyContext(req) {
 webpackEmptyContext.keys = function() { return []; };
 webpackEmptyContext.resolve = webpackEmptyContext;
 module.exports = webpackEmptyContext;
-webpackEmptyContext.id = 13;
+webpackEmptyContext.id = 11;
 
 /***/ }),
-/* 14 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2250,7 +2099,7 @@ function format(value) {
 module.exports = { format: format, parse: parse };
 
 /***/ }),
-/* 15 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2271,7 +2120,7 @@ var safeBuffer = __webpack_require__(0);
 var PerMessageDeflate = __webpack_require__(1);
 var isValidUTF8 = __webpack_require__(32);
 var bufferUtil = __webpack_require__(4);
-var ErrorCodes = __webpack_require__(16);
+var ErrorCodes = __webpack_require__(14);
 var constants = __webpack_require__(2);
 
 var Buffer = safeBuffer.Buffer;
@@ -2870,7 +2719,7 @@ function toArrayBuffer(buf) {
 }
 
 /***/ }),
-/* 16 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2903,7 +2752,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 17 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2924,7 +2773,7 @@ var crypto = __webpack_require__(3);
 
 var PerMessageDeflate = __webpack_require__(1);
 var bufferUtil = __webpack_require__(4);
-var ErrorCodes = __webpack_require__(16);
+var ErrorCodes = __webpack_require__(14);
 var constants = __webpack_require__(2);
 
 var Buffer = safeBuffer.Buffer;
@@ -3370,7 +3219,7 @@ function viewToBuffer(view) {
 }
 
 /***/ }),
-/* 18 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3381,21 +3230,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = trace;
 
-var _traceClient = __webpack_require__(19);
+var _traceClientRemote = __webpack_require__(17);
 
-var _traceClient2 = _interopRequireDefault(_traceClient);
+var _traceClientRemote2 = _interopRequireDefault(_traceClientRemote);
 
-var _adapterSocketNode = __webpack_require__(20);
+var _adapterSocketNode = __webpack_require__(18);
 
 var _adapterSocketNode2 = _interopRequireDefault(_adapterSocketNode);
 
-var _adapterFactory = __webpack_require__(36);
-
-var _adapterFactory2 = _interopRequireDefault(_adapterFactory);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var client = new _traceClient2.default((0, _adapterFactory2.default)(_adapterSocketNode2.default));
+var client = new _traceClientRemote2.default(_adapterSocketNode2.default);
 
 function trace() {
   for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
@@ -3406,7 +3251,7 @@ function trace() {
 }
 
 /***/ }),
-/* 19 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3420,9 +3265,9 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var TraceClient = function () {
-  function TraceClient(SocketAdapter) {
-    _classCallCheck(this, TraceClient);
+var TraceClientRemote = function () {
+  function TraceClientRemote(SocketAdapter) {
+    _classCallCheck(this, TraceClientRemote);
 
     this.onMessage = function (data) {
       console.log('onMessage:', data);
@@ -3433,7 +3278,7 @@ var TraceClient = function () {
     this.buffer = [];
   }
 
-  _createClass(TraceClient, [{
+  _createClass(TraceClientRemote, [{
     key: 'send',
     value: function send() {
       var _this = this;
@@ -3471,14 +3316,14 @@ var TraceClient = function () {
     }
   }]);
 
-  return TraceClient;
+  return TraceClientRemote;
 }();
 
-exports.default = TraceClient;
+exports.default = TraceClientRemote;
 ;
 
 /***/ }),
-/* 20 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3490,7 +3335,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _adapterSocketBrowser = __webpack_require__(21);
+var _adapterSocketBrowser = __webpack_require__(19);
 
 var _adapterSocketBrowser2 = _interopRequireDefault(_adapterSocketBrowser);
 
@@ -3553,7 +3398,7 @@ exports.default = NodeSocketAdapter;
 ;
 
 /***/ }),
-/* 21 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3565,7 +3410,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _adapterBase = __webpack_require__(5);
+var _adapterBase = __webpack_require__(20);
 
 var _adapterBase2 = _interopRequireDefault(_adapterBase);
 
@@ -3631,6 +3476,157 @@ exports.default = BrowserSocketAdapter;
 ;
 
 /***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _config = __webpack_require__(21);
+
+var _config2 = _interopRequireDefault(_config);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var AdapterBase = function () {
+  function AdapterBase(onMessageHandler) {
+    _classCallCheck(this, AdapterBase);
+
+    this.socket = null;
+    this.isConnected = false;
+    this.isConnecting = false;
+    this.hasError = false;
+    this.clientId = null;
+    this.onMessageHandler = onMessageHandler;
+  }
+
+  _createClass(AdapterBase, [{
+    key: 'connect',
+    value: function connect() {
+      var _this = this;
+
+      return new Promise(function (resolve, reject) {
+        var host = _config2.default.host,
+            port = _config2.default.port;
+
+
+        _config2.default.isConnecting = true;
+
+        console.log('connecting:', host, port);
+        _this.createSocket(host, port).then(function (socket) {
+          _this.socket = socket;
+          _this.isConnected = true;
+          _this.isConnecting = false;
+
+          _this.resolveConnection = resolve;
+        }).catch(reject);
+      });
+    }
+  }, {
+    key: 'createSocket',
+    value: function createSocket(host, port) {
+      // 1. create socket implementation
+      // 2. bind to handlers
+      // 3. return Promise.resolve(socket)
+      throw new Error('unimplemented');
+    }
+  }, {
+    key: 'onMessage',
+    value: function onMessage(data) {
+      if (data.cmd === 'id.set') {
+        this.clientId = _config2.default.clientId = data.value;
+        this.resolveConnection();
+      }
+      this.onMessageHandler(data);
+    }
+  }, {
+    key: 'onError',
+    value: function onError(error) {
+      this.hasError = true;
+      console.log('error!', error);
+    }
+  }, {
+    key: 'send',
+    value: function send(cmd) {
+      var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+      if (this.hasError) {
+        throw new Error('Cannot send trace data, socket has failed.');
+      }
+
+      var message = {
+        clientId: this.clientId,
+        cmd: cmd,
+        data: data
+      };
+
+      try {
+        var jsonStr = JSON.stringify(message);
+        this.socketSend(jsonStr);
+      } catch (e) {
+        throw new Error('Cannot convert trace message data to JSON: ' + e.toString());
+      }
+    }
+  }, {
+    key: 'socketSend',
+    value: function socketSend(jsonStr) {
+      // send json string using socket implementation
+      throw new Error('unimplemented');
+    }
+  }, {
+    key: 'close',
+    value: function close() {
+      this.send('close');
+    }
+  }]);
+
+  return AdapterBase;
+}();
+
+exports.default = AdapterBase;
+;
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var defaultConfig = {
+  inproc: false,
+  host: 'ws://127.0.0.1',
+  port: 8080,
+  clientId: null
+};
+
+var config = defaultConfig;
+
+if ((typeof __TRACE__ === 'undefined' ? 'undefined' : _typeof(__TRACE__)) === 'object') {
+  config = __TRACE__;
+} else {
+  global.__TRACE__ = config;
+}
+
+config.isConnected = false;
+
+exports.default = config;
+
+/***/ }),
 /* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3643,11 +3639,11 @@ exports.default = BrowserSocketAdapter;
 
 
 
-var WebSocket = __webpack_require__(7);
+var WebSocket = __webpack_require__(5);
 
 WebSocket.Server = __webpack_require__(35);
-WebSocket.Receiver = __webpack_require__(15);
-WebSocket.Sender = __webpack_require__(17);
+WebSocket.Receiver = __webpack_require__(13);
+WebSocket.Sender = __webpack_require__(15);
 
 module.exports = WebSocket;
 
@@ -3746,7 +3742,7 @@ module.exports = require("zlib");
 
 
 try {
-  module.exports = __webpack_require__(12)('bufferutil');
+  module.exports = __webpack_require__(10)('bufferutil');
 } catch (e) {
   module.exports = __webpack_require__(30);
 }
@@ -4038,7 +4034,7 @@ try {
 
 
 try {
-  module.exports = __webpack_require__(12)('validation');
+  module.exports = __webpack_require__(10)('validation');
 } catch (e) {
   module.exports = __webpack_require__(34);
 }
@@ -4134,16 +4130,16 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var safeBuffer = __webpack_require__(0);
-var EventEmitter = __webpack_require__(8);
+var EventEmitter = __webpack_require__(6);
 var crypto = __webpack_require__(3);
-var Ultron = __webpack_require__(9);
-var http = __webpack_require__(10);
-var url = __webpack_require__(11);
+var Ultron = __webpack_require__(7);
+var http = __webpack_require__(8);
+var url = __webpack_require__(9);
 
 var PerMessageDeflate = __webpack_require__(1);
-var Extensions = __webpack_require__(14);
+var Extensions = __webpack_require__(12);
 var constants = __webpack_require__(2);
-var WebSocket = __webpack_require__(7);
+var WebSocket = __webpack_require__(5);
 
 var Buffer = safeBuffer.Buffer;
 
@@ -4472,80 +4468,7 @@ function abortConnection(socket, code, message) {
   socket.destroy();
 }
 
-/***/ }),
-/* 36 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = getAdapter;
-
-var _config = __webpack_require__(6);
-
-var _config2 = _interopRequireDefault(_config);
-
-var _adapterInproc = __webpack_require__(37);
-
-var _adapterInproc2 = _interopRequireDefault(_adapterInproc);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function getAdapter(Adapter) {
-  return _config2.default.inproc ? _adapterInproc2.default : Adapter;
-};
-
-/***/ }),
-/* 37 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _adapterBase = __webpack_require__(5);
-
-var _adapterBase2 = _interopRequireDefault(_adapterBase);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var InProcAdapter = function (_AdapterBase) {
-  _inherits(InProcAdapter, _AdapterBase);
-
-  function InProcAdapter() {
-    _classCallCheck(this, InProcAdapter);
-
-    return _possibleConstructorReturn(this, (InProcAdapter.__proto__ || Object.getPrototypeOf(InProcAdapter)).apply(this, arguments));
-  }
-
-  _createClass(InProcAdapter, [{
-    key: 'createSocket',
-    value: function createSocket(host, port) {
-      return Promise.resolve();
-    }
-  }]);
-
-  return InProcAdapter;
-}(_adapterBase2.default);
-
-exports.default = InProcAdapter;
-;
-
 /***/ })
 /******/ ])["default"];
 });
-//# sourceMappingURL=trace-client-node.js.map
+//# sourceMappingURL=client-node.js.map

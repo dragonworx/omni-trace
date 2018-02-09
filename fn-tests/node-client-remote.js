@@ -1,5 +1,5 @@
 
-const trace = require('../dist/trace-client-node');
+const trace = require('../dist/client-node');
 
 trace('hello', 'world!');
 

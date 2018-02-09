@@ -49,17 +49,21 @@ function config (opts) {
 const configs = {
   "server": {
     target: 'node',
-    entry: './src/server/index.js',
-    filename: 'server.js',
+    entry: './src/server/remote.js',
+    filename: 'server-remote.js',
   },
   "client-browser": {
     entry: './src/client/browser.js',
-    filename: 'trace-client-browser.js',
+    filename: 'client-browser.js',
   },
   "client-node": {
     target: 'node',
     entry: './src/client/node.js',
-    filename: 'trace-client-node.js',
+    filename: 'client-node.js',
+  },
+  "client-inproc": {
+    entry: './src/server/trace-client-inproc.js',
+    filename: 'client-inproc.js',
   },
   "test-browser-client-bundle": {
     entry: './fn-tests/browser-client-bundle.js',
@@ -77,6 +81,6 @@ const configs = {
   }*/
 };
 
-const builds = ['server', 'client-browser', 'client-node', 'test-browser-client-bundle'];
+const builds = ['server', 'client-browser', 'client-node', 'client-inproc', 'test-browser-client-bundle'];
 
 module.exports = builds.map(name => config(configs[name]));

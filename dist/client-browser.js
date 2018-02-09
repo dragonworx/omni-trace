@@ -80,35 +80,16 @@ return /******/ (function(modules) { // webpackBootstrap
 "use strict";
 
 
-var _browser = __webpack_require__(1);
-
-var _browser2 = _interopRequireDefault(_browser);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-(0, _browser2.default)('hello', 'world!');
-
-document.getElementById('button').onclick = function () {
-  return (0, _browser2.default)('hello!', Date.now());
-};
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = trace;
 
-var _traceClientRemote = __webpack_require__(2);
+var _traceClientRemote = __webpack_require__(1);
 
 var _traceClientRemote2 = _interopRequireDefault(_traceClientRemote);
 
-var _adapterSocketBrowser = __webpack_require__(3);
+var _adapterSocketBrowser = __webpack_require__(2);
 
 var _adapterSocketBrowser2 = _interopRequireDefault(_adapterSocketBrowser);
 
@@ -125,7 +106,7 @@ function trace() {
 }
 
 /***/ }),
-/* 2 */
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -197,7 +178,7 @@ exports.default = TraceClientRemote;
 ;
 
 /***/ }),
-/* 3 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -209,7 +190,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _adapterBase = __webpack_require__(4);
+var _adapterBase = __webpack_require__(3);
 
 var _adapterBase2 = _interopRequireDefault(_adapterBase);
 
@@ -275,7 +256,7 @@ exports.default = BrowserSocketAdapter;
 ;
 
 /***/ }),
-/* 4 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -287,7 +268,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _config = __webpack_require__(5);
+var _config = __webpack_require__(4);
 
 var _config2 = _interopRequireDefault(_config);
 
@@ -394,7 +375,7 @@ exports.default = AdapterBase;
 ;
 
 /***/ }),
-/* 5 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -424,10 +405,10 @@ if ((typeof __TRACE__ === 'undefined' ? 'undefined' : _typeof(__TRACE__)) === 'o
 config.isConnected = false;
 
 exports.default = config;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ }),
-/* 6 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -459,4 +440,4 @@ module.exports = g;
 /***/ })
 /******/ ])["default"];
 });
-//# sourceMappingURL=test-browser-client-bundle.js.map
+//# sourceMappingURL=client-browser.js.map
