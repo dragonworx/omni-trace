@@ -223,10 +223,29 @@ if ((typeof __TRACE__ === 'undefined' ? 'undefined' : _typeof(__TRACE__)) === 'o
 config.isConnected = false;
 
 exports.default = config;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ }),
 /* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _browser = __webpack_require__(3);
+
+var _browser2 = _interopRequireDefault(_browser);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+(0, _browser2.default)('hello', 'world!');
+
+document.getElementById('button').onclick = function () {
+  return (0, _browser2.default)('hello!', Date.now());
+};
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -237,15 +256,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = trace;
 
-var _traceClient = __webpack_require__(3);
+var _traceClient = __webpack_require__(4);
 
 var _traceClient2 = _interopRequireDefault(_traceClient);
 
-var _adapterSocketBrowser = __webpack_require__(4);
+var _adapterSocketBrowser = __webpack_require__(5);
 
 var _adapterSocketBrowser2 = _interopRequireDefault(_adapterSocketBrowser);
 
-var _adapterFactory = __webpack_require__(6);
+var _adapterFactory = __webpack_require__(7);
 
 var _adapterFactory2 = _interopRequireDefault(_adapterFactory);
 
@@ -262,7 +281,7 @@ function trace() {
 }
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -334,7 +353,7 @@ exports.default = TraceClient;
 ;
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -412,7 +431,7 @@ exports.default = BrowserSocketAdapter;
 ;
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -442,7 +461,7 @@ try {
 module.exports = g;
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -457,7 +476,7 @@ var _config = __webpack_require__(1);
 
 var _config2 = _interopRequireDefault(_config);
 
-var _adapterInproc = __webpack_require__(7);
+var _adapterInproc = __webpack_require__(8);
 
 var _adapterInproc2 = _interopRequireDefault(_adapterInproc);
 
@@ -468,7 +487,7 @@ function getAdapter(Adapter) {
 };
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -517,4 +536,4 @@ exports.default = InProcAdapter;
 /***/ })
 /******/ ])["default"];
 });
-//# sourceMappingURL=trace-client-browser.js.map
+//# sourceMappingURL=test-browser-client-bundle.js.map

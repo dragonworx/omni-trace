@@ -1,4 +1,4 @@
-const WebSocket = require('ws');
+import WebSocket from 'ws';
 
 let wss = null;
 let clientId = 0;
@@ -79,4 +79,4 @@ function pollPurgeBrokenConnections (intervalMs) {
   }, intervalMs);
 }
 
-module.exports = server;
+export default server;

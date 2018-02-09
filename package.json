@@ -4,7 +4,7 @@
   "description": "runtime tracing for everyone",
   "main": "./dist/trace.js",
   "scripts": {
-    "test-server": "node index",
+    "test-server": "node ./fn-tests/node-server",
     "test-client": "node ./fn-tests/node-client",
     "build": "webpack",
     "build-watch": "webpack --watch",

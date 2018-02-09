@@ -36,7 +36,7 @@ export default class AdapterBase {
 
   onMessage (data) {
     if (data.cmd === 'id.set') {
-      this.clientId = data.value;
+      this.clientId = config.clientId = data.value;
       this.resolveConnection();
     }
     this.onMessageHandler(data);
