@@ -1,5 +1,5 @@
 {
-  "name": "trace",
+  "name": "omni-trace",
   "version": "0.1.0",
   "description": "runtime tracing for everyone",
   "main": "./dist/trace.js",
