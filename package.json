@@ -4,8 +4,8 @@
   "description": "runtime tracing for everyone",
   "main": "./dist/trace.js",
   "scripts": {
-    "start": "node index",
-    "client": "node ./fn-tests/node-client",
+    "test-server": "node index",
+    "test-client": "node ./fn-tests/node-client",
     "build": "webpack",
     "build-watch": "webpack --watch",
     "test": "jest",
@@ -28,6 +28,11 @@
   },
   "dependencies": {
     "blessed": "^0.1.81",
+    "detect-node": "^2.0.3",
     "ws": "^3.3.3"
+  },
+  "optionalDependencies": {
+    "bufferutil": "^3.0.3",
+    "utf-8-validate": "^4.0.0"
   }
 }

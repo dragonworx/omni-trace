@@ -30,7 +30,7 @@ function server (port) {
 
         console.log('server-received: ' + message + '\n');
 
-        if (msg.data.cmd === 'close') {
+        if (msg.cmd === 'close') {
           close(ws, 'CLIENT-INITIATED');
         }
       });

@@ -1,12 +1,8 @@
-const WebSocket = require('ws');
 
-const ws = new WebSocket('ws://127.0.0.1:8080');
+const trace = require('../dist/trace-client-node');
 
-ws.on('open', function open() {
-  // ws.send('something');
-  console.log("open")
-});
+trace('hello', 'world!');
 
-ws.on('message', function incoming(data) {
-  console.log(data);
-});
+setInterval(() => {
+  trace('hello!', Date.now())
+}, 2000);

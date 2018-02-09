@@ -2,6 +2,7 @@ const webpack = require('webpack');
 
 function config (opts) {
   return {
+    target: opts.target || 'web',
     entry: opts.entry,
     output: {
       filename: opts.filename,
@@ -31,9 +32,14 @@ function config (opts) {
 }
 
 const configs = {
-  "browser": {
-    entry: './src/client/browser.js',
+  "client-browser": {
+    entry: './src/client-browser.js',
     filename: 'trace-client-browser.js',
+  },
+  "client-node": {
+    target: 'node',
+    entry: './src/client-node.js',
+    filename: 'trace-client-node.js',
   },
   /*"production": {
     filename: 'trace.min.js',
@@ -47,6 +53,6 @@ const configs = {
   }*/
 };
 
-const builds = ['browser'/*, 'production'*/];
+const builds = ['client-browser', 'client-node'/*, 'production'*/];
 
 module.exports = builds.map(name => config(configs[name]));

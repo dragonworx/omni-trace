@@ -1,5 +1,6 @@
 export default class TraceClient {
   constructor (SocketAdapter) {
+    console.log(SocketAdapter.name);
     this.socketAdapter = new SocketAdapter(this.onMessage);
     this.buffer = [];
   }
@@ -22,8 +23,6 @@ export default class TraceClient {
 
   flush () {
     const { socketAdapter, buffer } = this;
-    // TODO: flush buffer to socket.send(...)
-    // temp, show to console...
     while (buffer.length) {
       const row = buffer.shift();
       console.log('flush:', row);
