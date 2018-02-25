@@ -1,9 +1,21 @@
 const webpack = require('webpack');
+const path = require('path');
+const fs = require('fs');
+
+const nodeModules = {};
+fs.readdirSync('node_modules')
+  .filter(function(x) {
+    return ['.bin'].indexOf(x) === -1;
+  })
+  .forEach(function(mod) {
+    nodeModules[mod] = 'commonjs ' + mod;
+  });
 
 function config (opts) {
   return {
     target: opts.target || 'web',
     entry: opts.entry,
+    externals: opts.externals || [],
     output: {
       filename: opts.filename,
       path: opts.path || __dirname + '/dist',
@@ -62,8 +74,10 @@ const configs = {
     filename: 'client-node.js',
   },
   "client-inproc": {
+    target: 'node',
     entry: './src/server/trace-client-inproc.js',
     filename: 'client-inproc.js',
+    externals: nodeModules,
   },
   "test-browser-client-bundle": {
     entry: './fn-tests/browser-client-bundle.js',
@@ -81,6 +95,6 @@ const configs = {
   }*/
 };
 
-const builds = ['server', 'client-browser', 'client-node', 'client-inproc', 'test-browser-client-bundle'];
+const builds = [/*'server', 'client-browser', 'client-node',*/ 'client-inproc',/* 'test-browser-client-bundle'*/];
 
 module.exports = builds.map(name => config(configs[name]));

@@ -5,4 +5,4 @@ trace('hello', 'world!');
 
 setInterval(() => {
   trace('hello!', Date.now())
-}, 2000);
+}, 1000);

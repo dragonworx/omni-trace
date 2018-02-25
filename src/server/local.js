@@ -1,6 +1,12 @@
+import { output } from './ui';
+
 export default class LocalServer {
   constructor () {
     this.buffer = [];
+  }
+
+  start (port) {
+    output.log(`Trace Server started on port: {bold}${port ? port : 'in-proc'}{/}`)
   }
 
   trace (event) {
@@ -8,7 +14,7 @@ export default class LocalServer {
       ...event,
       time: Date.now()
     }
-    console.log('TRACE:', bufferedEvent);
+    output.log(`{bold}trace:{/} ${JSON.stringify(bufferedEvent)}`);
     this.buffer.push(bufferedEvent);
   }
 }

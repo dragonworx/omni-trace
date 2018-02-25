@@ -1,5 +1,6 @@
 import WebSocket from 'ws';
 import LocalServer from './local';
+import { output } from './ui';
 
 class Server {
   constructor () {
@@ -17,7 +18,7 @@ class Server {
     
         wss.on('connection', ws => {
           const clientId = ++this.clientId;
-          console.log('new client connected: #' + clientId);
+          output.log(`new client connected: {bold}#${clientId}{/}`);
     
           ws.clientId = clientId;
           ws.isAlive = true;
@@ -30,11 +31,11 @@ class Server {
             const msg = JSON.parse(message);
     
             if (ws.isClosed) {
-              console.log('server-received (ws.closed): '+ message);
+              output.log(`server-received (ws.closed): ${message}`);
               return;
             }
     
-            console.log('server-received: ' + message);
+            output.log(`server-received: ${message}`);
     
             if (msg.cmd === 'close') {
               this.close(ws, 'CLIENT-INITIATED');
@@ -54,14 +55,14 @@ class Server {
         });
     
         wss.on('error', e => {
-          console.log('wss-error', e.stack);
+          output.log(`{red}wss-error: ${e.stack}{/}`);
         });
     
         wss.on('close', (code, reason) => {
-          console.log('close', code, reason);
+          output.log(`close code: ${code} reason: ${reason}`);
         });
     
-        console.log('------------------------------\nTrace Server started on port: ' + port + '\n');;
+        this.server.start(port);
     
         // this.pollPurgeBrokenConnections();
     
@@ -73,7 +74,7 @@ class Server {
   }
 
   close (ws, reason) {
-    console.log('closed client connection: #' + ws.clientId + ' (' + reason + ')');
+    output.log(`closed client connection: {bold}#${ws.clientId}{/} reason: ${reason}`);
     ws.terminate();
     ws.isClosed = true;
   }
@@ -82,7 +83,7 @@ class Server {
     const interval = setInterval(() => {
       this.wss.clients.forEach(ws => {
         if (ws.isAlive === false) {
-          console.log('terminating: ' + ws.clientId);
+          output.log(`{red}terminating: {bold}#${ws.clientId}{/}`);
           return ws.terminate();
         }
     
